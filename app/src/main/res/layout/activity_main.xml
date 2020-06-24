@@ -6,13 +6,93 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
+        android:id="@+id/iv_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_time"
+        android:layout_margin="@dimen/usual_margin"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오후 12:00:00"
+        android:layout_marginStart="@dimen/usual_margin"
+        app:layout_constraintStart_toEndOf="@id/iv_timer"
+        app:layout_constraintTop_toTopOf="@id/iv_timer"
+        app:layout_constraintBottom_toBottomOf="@id/iv_timer" />
+
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_location"
+        android:layout_marginStart="@dimen/usual_margin"
+        android:layout_marginTop="@dimen/usual_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_timer" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="주소"
+        android:layout_marginStart="@dimen/usual_margin"
+        android:layout_marginEnd="@dimen/usual_margin"
+        app:layout_constraintStart_toEndOf="@id/iv_location"
+        app:layout_constraintEnd_toStartOf="@id/btn_refresh"
+        app:layout_constraintTop_toTopOf="@id/iv_location"
+        app:layout_constraintBottom_toBottomOf="@id/iv_location" />
+
+    <ImageButton
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_refresh"
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginEnd="@dimen/usual_margin"
+        app:layout_constraintStart_toEndOf="@id/tv_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_location" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/usual_margin"
+        android:layout_marginEnd="@dimen/usual_margin"
+        android:layout_marginTop="@dimen/usual_margin"
+        android:layout_marginBottom="@dimen/usual_margin"
+        android:background="@android:color/black"
+        android:alpha="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_refresh" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btn_add_memo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="메모 추가"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginEnd="@dimen/usual_margin"
+        android:layout_marginBottom="@dimen/usual_margin"
+        app:icon="@drawable/ic_edit"
+        app:iconTint="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
