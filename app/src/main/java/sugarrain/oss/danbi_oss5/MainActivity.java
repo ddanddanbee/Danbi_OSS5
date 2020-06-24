@@ -1,7 +1,10 @@
 package sugarrain.oss.danbi_oss5;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -11,7 +14,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -131,11 +138,46 @@ public class MainActivity extends AppCompatActivity {
         });
 
         List<MemoData> datas = dbHelper.getAllData();
-        MemoAdapter adapter = new MemoAdapter(datas);
+        final MemoAdapter adapter = new MemoAdapter(datas);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        final EditText dialogEditText = new EditText(getApplicationContext());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(R.layout.dialog_edittext)
+                .setTitle("새 메모")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Dialog f = (Dialog) dialogInterface;
+                        EditText input = f.findViewById(R.id.editText);
 
+                        MemoData data = new MemoData();
+                        data.setMemo(input.getText().toString());
+                        data.time = System.currentTimeMillis();
+                        adapter.addItem(data, dbHelper);
+
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+        add_memo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dialogEditText.getParent() != null) {
+                    ((ViewGroup) dialogEditText.getParent()).removeView(dialogEditText);
+                }
+                Dialog dialog = builder.create();
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+                dialog.show();
+            }
+        });
 
 
     }

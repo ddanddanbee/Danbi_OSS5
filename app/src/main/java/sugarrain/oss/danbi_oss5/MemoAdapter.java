@@ -1,5 +1,6 @@
 package sugarrain.oss.danbi_oss5;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,7 +32,7 @@ class MemoAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 E요일");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 E요일 a hh:mm:ss");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mItems.get(position).getTime());
         holder.content.setText(mItems.get(position).getMemo());
@@ -37,8 +40,7 @@ class MemoAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.deleteData(mItems.get(position).id);
-                notifyItemRemoved(position);
+                deleteItem(position);
             }
         });
     }
@@ -47,17 +49,30 @@ class MemoAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     public int getItemCount() {
         return mItems.size();
     }
+
+    public void addItem(MemoData data, DBHelper dbHelper) {
+        dbHelper.addData(data);
+        mItems.add(data);
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position) {
+        dbHelper.deleteData(mItems.get(position).getId());
+        mItems.remove(position);
+        notifyDataSetChanged();
+    }
+
 }
 
 class ItemViewHolder extends RecyclerView.ViewHolder {
-    View itemView;
+    TextView content;
+    TextView date;
+    ImageButton delete;
 
     public ItemViewHolder(View itemView) {
         super(itemView);
-        this.itemView = itemView;
+        content = itemView.findViewById(R.id.memo_content);
+        date = itemView.findViewById(R.id.memo_date);
+        delete = itemView.findViewById(R.id.btn_delete);
     }
-
-    TextView content = itemView.findViewById(R.id.memo_content);
-    TextView date = itemView.findViewById(R.id.memo_date);
-    ImageButton delete = itemView.findViewById(R.id.btn_delete);
 }
